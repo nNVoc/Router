@@ -1,0 +1,14 @@
+{
+    "name": "nnvoc/router",
+    "description": "A simple and reusable PHP router",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "nNVoc\\Router\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.2"
+    }   
+}
