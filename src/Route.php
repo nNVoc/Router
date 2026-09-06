@@ -4,6 +4,8 @@ namespace nNVoc\Router;
 
 class Route
 {
+    private array $middlewares = [];
+
     public function __construct(
         private string $method,
         private string $path,
@@ -39,8 +41,27 @@ class Route
         return $params;
     }
 
+    public function middleware(Middleware $middleware): self
+    {
+        $this->middlewares[] = $middleware;
+
+        return $this;
+    }
+
     public function run(Request $request, array $params): Response
     {
-        return ($this->handler)($request, $params);
+        $handler = function (Request $request) use ($params): Response {
+            return ($this->handler)($request, $params);
+        };
+
+        foreach (array_reverse($this->middlewares) as $middleware) {
+            $next = $handler;
+
+            $handler = function (Request $request) use ($middleware, $next): Response {
+                return $middleware->handle($request, $next);
+            };
+        }
+
+        return $handler($request);
     }
 }
