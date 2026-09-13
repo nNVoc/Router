@@ -2,6 +2,8 @@
 
 namespace nNVoc\Router;
 
+use ReturnTypeWillChange;
+
 class Route
 {
     private array $middlewares = [];
@@ -14,10 +16,6 @@ class Route
 
     public function match(string $method, string $path): array|false|null
     {
-        if ($this->method !== $method) {
-            return false;
-        }
-        
         $pattern = preg_replace(
             '#\{([^}]+)\}#',
             '([^/]+)',
@@ -28,6 +26,10 @@ class Route
 
         if (!preg_match($pattern, $path, $matches)) {
             return null;
+        }
+
+        if ($this->method !== $method) {
+            return false;
         }
 
         preg_match_all('#\{([^}]+)\}#', $this->path, $names);
