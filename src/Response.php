@@ -20,4 +20,17 @@ class Response
 
         echo $this->body;
     }
+
+    public static function json(
+        array $data,
+        int $status = 200
+    ): self {
+        return new self(
+            body: json_encode($data),
+            status: $status,
+            headers: [
+                'Content-Type' => 'application/json'
+            ]
+        );
+    }
 }
