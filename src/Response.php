@@ -26,7 +26,10 @@ class Response
         int $status = 200
     ): self {
         return new self(
-            body: json_encode($data),
+            body: json_encode(
+                $data,
+                JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE
+            ),
             status: $status,
             headers: [
                 'Content-Type' => 'application/json'
