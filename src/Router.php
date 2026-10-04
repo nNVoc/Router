@@ -6,48 +6,52 @@ class Router
 {
     private array $routes = [];
 
-    public function get(string $path, callable|array $handler): void
+    public function get(string $path, callable|array $handler): Route
     {
-        $this->add('GET', $path, $handler);
+        return $this->add('GET', $path, $handler);
     }
 
-    public function post(string $path, callable|array $handler): void
+    public function post(string $path, callable|array $handler): Route
     {
-        $this->add('POST', $path, $handler);
+        return $this->add('POST', $path, $handler);
     }
 
-    public function put(string $path, callable|array $handler): void
+    public function put(string $path, callable|array $handler): Route
     {
-        $this->add('PUT', $path, $handler);
+        return $this->add('PUT', $path, $handler);
     }
 
-    public function patch(string $path, callable|array $handler): void
+    public function patch(string $path, callable|array $handler): Route
     {
-        $this->add('PATCH', $path, $handler);
+        return $this->add('PATCH', $path, $handler);
     }
 
-    public function delete(string $path, callable|array $handler): void
+    public function delete(string $path, callable|array $handler): Route
     {
-        $this->add('DELETE', $path, $handler);
+        return $this->add('DELETE', $path, $handler);
     }
 
-    public function head(string $path, callable|array $handler): void
+    public function head(string $path, callable|array $handler): Route
     {
-        $this->add('HEAD', $path, $handler);
+        return $this->add('HEAD', $path, $handler);
     }
 
-    public function options(string $path, callable|array $handler): void
+    public function options(string $path, callable|array $handler): Route
     {
-        $this->add('OPTIONS', $path, $handler);
+        return $this->add('OPTIONS', $path, $handler);
     }
 
     private function add(
         string $method,
         string $path,
         callable|array $handler
-    ): void
+    ): Route
     {
-        $this->routes[] = new Route($method, $path, $handler);
+        $route = new Route($method, $path, $handler);
+    
+        $this->routes[] = $route;
+
+        return $route;
     }
 
     public function dispatch(Request $request): Response
